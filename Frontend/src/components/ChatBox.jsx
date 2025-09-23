@@ -1,111 +1,181 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { useAppContext } from '../context/AppContext';
-import SmartGPT from '../../public/SmartGPT.png'
-import Message from './Message';
-import { assets } from '../assets/assets';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useAppContext } from "../context/AppContext";
+import SmartGPT from "../../public/SmartGPT.png";
+import Message from "./Message";
+import { assets } from "../assets/assets";
+import toast from "react-hot-toast";
 
 const ChatBox = () => {
-
-
-  const {selectedChat} = useAppContext();
+  const { selectedChat, user, axios, token, setUser } = useAppContext();
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
-  const [mode, setMode] = useState('text');
+  const [mode, setMode] = useState("text");
   const [isPublished, setIsPublished] = useState(false);
 
   const containerRef = useRef(null);
 
-const onSubmit = async (e) => {
-  e.preventDefault();
-}
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) return toast("Login to send a message");
 
-  
-  useEffect(()=>{
-
-    if(selectedChat){
-      setMessages(selectedChat.messages)
+    if (!selectedChat?._id) {
+      return toast.error("Please select a chat first");
     }
 
-  }, [selectedChat])
+    const promptCopy = prompt.trim();
+    if (!promptCopy) return; // block empty messages
 
+    setLoading(true);
+    setPrompt("");
 
-  useEffect(()=>{
+    try {
+      // Optimistically show user message
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "user",
+          content: promptCopy,
+          timestamp: Date.now(),
+          isImage: false,
+        },
+      ]);
 
-    if(containerRef.current){
+      const { data } = await axios.post(
+        `/api/message/${mode}`,
+        { chatId: selectedChat._id, prompt: promptCopy, isPublished },
+        { headers: { Authorization: token } }
+      );
+
+      if (data.success) {
+        setMessages((prev) => [...prev, data.reply]);
+      } else {
+        toast.error(data.message || "Something went wrong");
+        setPrompt(promptCopy);
+      }
+    } catch (error) {
+      toast.error(error.message || "Request failed");
+      setPrompt(promptCopy);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedChat) {
+      setMessages(selectedChat.messages);
+    }
+  }, [selectedChat]);
+
+  useEffect(() => {
+    if (containerRef.current) {
       containerRef.current.scrollTo({
         top: containerRef.current.scrollHeight,
-        behavior:"smooth",
-      })
+        behavior: "smooth",
+      });
     }
-
-  }, [messages])
+  }, [messages]);
 
   return (
-    <div className='flex-1 flex flex-col justify-between m-5 md:m-10 max-md:mt-14'>
-    
-      <div ref={containerRef} className='flex-1 mb-5 overflow-y-scroll'>
 
-        {
-          messages.length === 0 && (
-            <div className='flex h-screen w-full flex-col justify-center items-center'>
-              <img className='h-72' src={SmartGPT} alt="" />
-              <p className='mt-5 text-4xl text-center'>Ask me Anything</p>
-            </div>
-          )
-        }
-
-        {messages.map((message, index)=><Message key={index} message={message}/>)}
-
-
-        {
-          loading && <div className='loader flex items-center gap-1.5'>
-            <div className='w-1.5 h-1.5 rounded-full bg-gray-500'>
-            </div>
-            <div className='w-1.5 h-1.5 rounded-full bg-gray-500'>
-            </div>
-            <div className='w-1.5 h-1.5 rounded-full bg-gray-500'>
-            </div>
-          </div>
-        }
+    <div className="flex-1 flex flex-col justify-between m-5 md:m-10 max-md:mt-14 bg-gray-900 rounded-2xl shadow-xl overflow-hidden">
+  {/* Messages Container */}
+  <div
+    ref={containerRef}
+    className="flex-1 p-5 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800 bg-gray-800 rounded-t-2xl"
+  >
+    {messages.length === 0 && (
+      <div className="flex flex-col justify-center items-center h-full">
+        <img
+          className="h-64 md:h-72 animate-bounce rounded-full"
+          src={SmartGPT}
+          alt="SmartGPT"
+        />
+        <p className="mt-5 text-3xl md:text-4xl font-semibold text-gray-300 text-center">
+          <p>Hello {user.name}, how can i help you?</p>
+        </p>
       </div>
+    )}
+
+    {messages.map((message, index) => (
+      <Message key={index} message={message} darkMode />
+    ))}
+
+    {loading && (
+  <div className="flex items-center justify-center gap-2 mt-2">
+    <span className="w-3 h-3 bg-indigo-500 rounded-full animate-bounce shadow-lg shadow-indigo-500/50"></span>
+    <span className="w-3 h-3 bg-indigo-400 rounded-full animate-bounce delay-250 shadow-lg shadow-indigo-400/50"></span>
+    <span className="w-3 h-3 bg-indigo-300 rounded-full animate-bounce delay-600 shadow-lg shadow-indigo-300/50"></span>
+  </div>
+)}
 
 
+  </div>
+
+  {/* Publish Toggle */}
+  {mode === "image" && (
+    <label className="flex items-center gap-2 px-5 py-2 bg-gray-700 text-sm text-gray-200 font-medium mx-auto mt-3 rounded-lg cursor-pointer hover:bg-gray-600 transition">
+      <input
+        type="checkbox"
+        className="cursor-pointer"
+        checked={isPublished}
+        onChange={(e) => setIsPublished(e.target.checked)}
+      />
+      <span className="text-xs">Publish to Community</span>
+    </label>
+  )}
+
+  {/* Input Form */}
+  <form
+  onSubmit={onSubmit}
+  className="w-full flex items-center justify-center gap-3 p-4 bg-gray-900 border-t border-gray-700 shadow-inner rounded-b-2xl max-w-4xl mx-auto sticky bottom-0 backdrop-blur-md"
+>
+  {/* Mode Selector */}
+  <select
+    value={mode}
+    onChange={(e) => setMode(e.target.value)}
+    className="text-md px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-gray-200 hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+  >
+    <option value="text">Text</option>
+    <option value="image">Image</option>
+  </select>
+
+  {/* Prompt Input */}
+  <input
+    type="text"
+    placeholder="Type your prompt..."
+    value={prompt}
+    onChange={(e) => setPrompt(e.target.value)}
+    className=" w-full flex-1 text-md px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
+    required
+  />
+
+  {/* Submit Button */}
+  <button
+    type="submit"
+    disabled={loading}
+    className="w-10 h-10 flex justify-center items-center bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white rounded-full transition-shadow shadow-md hover:shadow-lg disabled:opacity-50"
+  >
+    <button
+  type="submit"
+  disabled={loading}
+  className="w-10 h-10 flex justify-center items-center bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white rounded-full transition-shadow shadow-md hover:shadow-lg disabled:opacity-50"
+>
+  {loading ? (
+    <i className="ri-loader-4-line w-6 h-6 animate-spin text-white"></i> // spinning loader icon
+  ) : (
+    <i className="ri-send-plane-2-fill w-6 h-6"></i> // send icon
+  )}
+</button>
 
 
-      {
+  </button>
+</form>
 
-        mode === 'image' && (
-          <label className='inline-flex items-center gap-2 mb-3 text-sm mx-auto'>
-            <p className='text-xs'>Publish to Community</p>
-            <input type="checkbox" className='cursor-pointer' checked={isPublished} onChange={(e)=>setIsPublished(e.target.checked)}/>
-          </label>
-        )
+</div>
 
-      }  
+  );
+};
 
-
-
-
-      <form onSubmit={onSubmit} className='w-full max-w-2xl p-3 pl-4 mx-auto flex gap-4 items-center'>
-
-        <select onChange={(e)=>setMode(e.target.value)} value={mode} className='text-sm pl-3 pr-2 outline-none'>
-          <option value="text">Text</option>
-          <option value="image">Image</option>
-        </select>
-
-        <input onChange={(e)=>setPrompt(e.target.value)} value={prompt} className='flex-1 w-full text-sm outline-none' type="text" placeholder='Type Your Prompt...' required />
-
-        <button disabled={loading}>
-          <img src={loading ? assets.stop_icon : assets.send_icon} className='w-8 cursor-pointer' alt="" />
-        </button>
-
-
-      </form>
-
-    </div>
-  )
-}
-
-export default ChatBox
+export default ChatBox;
