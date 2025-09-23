@@ -23,7 +23,7 @@ function App() {
 
     <>
     <Toaster />
-    {!isMenuOpen && <i className="ri-menu-line absolute z-1" onClick={()=>setIsMenuOpen(true)}></i>}
+    {!isMenuOpen && <i className="p-5 ri-menu-line absolute z-10 text-white text-2xl" onClick={()=>setIsMenuOpen(true)}></i>}
 
     {user ? (
 
