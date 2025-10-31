@@ -201,9 +201,9 @@ const ChatBox = () => {
     ))}
 
     {loading && (
-      <div className="flex flex-col items-center justify-center mt-2">
-        <img className="w-xl h-96 md:w-xl md:h-96" src={loadingLogo} alt="Let me Think" />
-        <span class="text-3xl font-bold text-white drop-shadow-[0_0_10px_#fffff] animate-pulse duration-[5000ms]">
+      <div className="relative flex flex-col items-center justify-center mt-2">
+        <img className="w-6xl h-96 md:w-xl md:h-96" src={loadingLogo} alt="Let me Think" />
+        <span className="absolute bottom-26 text-xl md:text-2xl font-bold bg-black text-white drop-shadow-[0_0_10px_#fffff] animate-pulse duration-[5000ms]">
           Thinking....
         </span>
       </div>
@@ -238,13 +238,19 @@ const ChatBox = () => {
       <option className="p-2" value="image">Image</option>
     </select>
 
-    {/* Prompt Input */}
+
+    
+
+
+    <div className="flex w-full gap-2">
+
+       {/* Prompt Input */}
     <input
       type="text"
       placeholder="Type your prompt..."
       value={prompt}
       onChange={(e) => setPrompt(e.target.value)}
-      className="w-full flex-1 text-md md:text-md px-4 md:px-5 py-3 border border-indigo-500 outline-none rounded-lg bg-zinc-920 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
+      className="w-full flex-1 text-sm md:text-md px-4 md:px-5 py-3 border border-indigo-500 outline-none rounded-lg bg-zinc-920 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
       required
     />
 
@@ -260,6 +266,10 @@ const ChatBox = () => {
         <i className="ri-send-plane-2-fill w-5 h-5"></i> 
       )}
     </button>
+
+    </div>
+
+   
   </form>
 </div>
 
