@@ -21,7 +21,7 @@ function App() {
 
   return (
 
-    <>
+    <div className="h-screen w-full bg-black">
     <Toaster />
     {!isMenuOpen && <i className="p-5 ri-menu-line absolute z-10 text-white text-2xl" onClick={()=>setIsMenuOpen(true)}></i>}
 
@@ -46,7 +46,7 @@ function App() {
 
     
 
-    </>
+    </div>
   );
 }
 
