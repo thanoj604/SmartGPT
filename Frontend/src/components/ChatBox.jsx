@@ -232,7 +232,7 @@ const ChatBox = () => {
     <select
       value={mode}
       onChange={(e) => setMode(e.target.value)}
-      className="text-md md:text-md px-3 md:px-5 py-2 md:py-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-200 hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+      className="text-md md:text-md px-5 md:px-5 py-2 md:py-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-200 hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
     >
       <option className="p-2" value="text">Text</option>
       <option className="p-2" value="image">Image</option>
