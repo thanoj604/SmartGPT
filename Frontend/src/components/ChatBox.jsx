@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useAppContext } from "../context/AppContext";
-import SmartGPT from "../../public/SmartGPT.png";
+import SmartGPT from "../../public/SmartGPT.gif";
 import Message from "./Message";
 import { assets } from "../assets/assets";
+import loadingLogo from '../assets/loading.gif'
 import toast from "react-hot-toast";
 
 const ChatBox = () => {
@@ -176,16 +177,16 @@ const ChatBox = () => {
 // </div>
 
 
-<div className="flex-1 flex flex-col justify-between m-3 md:m-8 max-md:mt-14 bg-gray-900 rounded-2xl shadow-xl overflow-hidden">
+<div className="flex-1 flex flex-col justify-between m-3 md:m-8 max-md:mt-14 bg-black-900 rounded-2xl shadow-xl overflow-hidden">
   {/* Messages Container */}
   <div
     ref={containerRef}
-    className="flex-1 p-3 md:p-5 overflow-y-auto space-y-3 md:space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800 bg-gray-800 rounded-t-2xl"
+    className="flex-1 p-3 md:p-5 overflow-y-auto space-y-3 md:space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800 bg-black rounded-t-2xl"
   >
     {messages.length === 0 && (
       <div className="flex flex-col justify-center items-center h-full">
         <img
-          className="h-48 md:h-64 animate-bounce rounded-full"
+          className="h-48 md:h-64 rounded-full"
           src={SmartGPT}
           alt="SmartGPT"
         />
@@ -200,17 +201,18 @@ const ChatBox = () => {
     ))}
 
     {loading && (
-      <div className="flex items-center justify-center gap-2 mt-2">
-        <span className="w-3 h-3 md:w-4 md:h-4 bg-indigo-500 rounded-full animate-bounce shadow-lg shadow-indigo-500/50"></span>
-        <span className="w-3 h-3 md:w-4 md:h-4 bg-indigo-400 rounded-full animate-bounce delay-150 shadow-lg shadow-indigo-400/50"></span>
-        <span className="w-3 h-3 md:w-4 md:h-4 bg-indigo-300 rounded-full animate-bounce delay-300 shadow-lg shadow-indigo-300/50"></span>
+      <div className="flex flex-col items-center justify-center mt-2">
+        <img className="w-xl h-96 md:w-xl md:h-96" src={loadingLogo} alt="Let me Think" />
+        <span class="text-3xl font-bold text-white drop-shadow-[0_0_10px_#fffff] animate-pulse duration-[5000ms]">
+          Thinking....
+        </span>
       </div>
     )}
   </div>
 
   {/* Publish Toggle */}
   {mode === "image" && (
-    <label className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-xs md:text-sm text-gray-200 font-medium mx-auto mt-3 rounded-lg cursor-pointer hover:bg-gray-600 transition">
+    <label className="flex items-center gap-2 px-4 py-2 bg-black text-xs md:text-sm text-gray-200 font-medium mx-auto mt-3 rounded-lg cursor-pointer hover:bg-gray-600 transition">
       <input
         type="checkbox"
         className="cursor-pointer"
@@ -224,16 +226,16 @@ const ChatBox = () => {
   {/* Input Form */}
   <form
     onSubmit={onSubmit}
-    className="w-full flex flex-col sm:flex-row items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-900 border-t border-gray-700 shadow-inner rounded-b-2xl max-w-4xl mx-auto sticky bottom-0 backdrop-blur-md"
+    className="w-full flex flex-col sm:flex-row items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-zinc-950 shadow-inner rounded-b-2xl max-w-4xl mx-auto sticky bottom-0 backdrop-blur-md"
   >
     {/* Mode Selector */}
     <select
       value={mode}
       onChange={(e) => setMode(e.target.value)}
-      className="text-sm md:text-md px-3 md:px-4 py-1 md:py-2 border border-gray-600 rounded-lg bg-gray-800 text-gray-200 hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+      className="text-md md:text-md px-3 md:px-5 py-2 md:py-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-200 hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
     >
-      <option value="text">Text</option>
-      <option value="image">Image</option>
+      <option className="p-2" value="text">Text</option>
+      <option className="p-2" value="image">Image</option>
     </select>
 
     {/* Prompt Input */}
@@ -242,7 +244,7 @@ const ChatBox = () => {
       placeholder="Type your prompt..."
       value={prompt}
       onChange={(e) => setPrompt(e.target.value)}
-      className="w-full flex-1 text-sm md:text-md px-3 md:px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
+      className="w-full flex-1 text-md md:text-md px-4 md:px-5 py-3 border border-indigo-500 outline-none rounded-lg bg-zinc-920 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
       required
     />
 
@@ -250,7 +252,7 @@ const ChatBox = () => {
     <button
       type="submit"
       disabled={loading}
-      className="w-10 h-10 flex justify-center items-center bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white rounded-full transition-shadow shadow-md hover:shadow-lg disabled:opacity-50"
+      className="w-12 h-12 flex justify-center items-center bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white rounded-full transition-shadow shadow-md hover:shadow-lg disabled:opacity-50"
     >
       {loading ? (
         <i className="ri-loader-4-line w-5 h-5 animate-spin text-white"></i> 

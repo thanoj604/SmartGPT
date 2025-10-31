@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
-import smartgptlogo from "../assets/smartgptlogo.png"
+import smartgptlogo from "../assets/smartgptlogo.gif"
 import moment from "moment";
 import toast from "react-hot-toast";
 import Loading from "../pages/Loading";
@@ -45,10 +45,10 @@ const SideBar = ({isMenuOpen, setIsMenuOpen}) => {
 
 
   return (
-    <div className={`flex flex-col items-center h-screen min-w-[16rem] p-4 sm:p-5 transition-all duration-500 relative max-md:absolute left-0 z-20 bg-gray-900 text-gray-100 ${!isMenuOpen && 'max-md:-translate-x-full'}`}>
+    <div className={`flex flex-col items-center h-screen min-w-[16rem] p-4 sm:p-5 transition-all duration-500 relative max-md:absolute left-0 z-20 bg-black text-gray-100 ${!isMenuOpen && 'max-md:-translate-x-full'}`}>
 
   {/* Logo */}
-  <img src={smartgptlogo} alt="SmartGPT Logo" className="w-full max-w-40 sm:max-w-48 mb-4 sm:mb-6" />
+  <img src={smartgptlogo} alt="SmartGPT Logo" className="w-full rounded-full max-w-40 sm:max-w-48 mb-4 sm:mb-6" />
 
   {/* New Chat Button */}
   <button
@@ -87,14 +87,15 @@ const SideBar = ({isMenuOpen, setIsMenuOpen}) => {
         >
           <div>
             <p className="truncate">
-              {chat.messages.length > 0 ? chat.messages[0].content.slice(0, 32) : chat.name}
+              {chat.messages.length > 0 ? chat.messages[0].content.slice(0, 20) : chat.name}
             </p>
             <p className="text-xs text-gray-500">
               {moment(chat.updatedAt).fromNow()}
             </p>
           </div>
           <i
-            className="ri-delete-bin-2-line hidden group-hover:inline-block ml-2 text-lg sm:text-2xl text-red-400 cursor-pointer"
+            className="ri-delete-bin-2-line ml-2 text-lg sm:text-2xl text-red-400 cursor-pointer inline-block md:hidden group-hover:inline-block"
+
             onClick={(e) => toast.promise(deleteChat(e, chat._id), { loading: "Deleting..." })}
           />
         </div>
@@ -120,7 +121,7 @@ const SideBar = ({isMenuOpen, setIsMenuOpen}) => {
       {user && (
         <i
           onClick={logout}
-          className="ri-logout-box-line hidden group-hover:block text-red-500 cursor-pointer text-lg sm:text-xl"
+          className="ri-logout-box-line ml-2 text-lg sm:text-xl text-red-400 cursor-pointer inline-block md:hidden group-hover:inline-block"
         ></i>
       )}
     </div>
@@ -129,7 +130,7 @@ const SideBar = ({isMenuOpen, setIsMenuOpen}) => {
   {/* Close Button for Mobile */}
   <i
     onClick={() => setIsMenuOpen(false)}
-    className="ri-close-fill absolute top-2 sm:top-3 right-2 sm:right-3 w-5 h-5 cursor-pointer md:hidden text-white hover:text-gray-200 transition"
+    className="text-2xl ri-close-fill absolute top-2 sm:top-3 right-2 sm:right-3 w-5 h-5 cursor-pointer md:hidden text-white hover:text-gray-200 transition"
   ></i>
 
 </div>

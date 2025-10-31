@@ -37,7 +37,7 @@ const Community = () => {
 
   return (
     <div className="p-4 sm:p-6 pt-12 xl:px-12 2xl:px-20 w-full mx-auto h-full overflow-y-scroll bg-gray-900 text-gray-200">
-  <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-indigo-400">
+  <h2 className="text-xl ml-10 sm:text-2xl font-semibold mb-6 text-indigo-400">
     Community Images
   </h2>
 

@@ -27,7 +27,7 @@ function App() {
 
     {user ? (
 
-      <div className="flex h-screen w-full bg-gray-900" >
+      <div className="flex h-screen w-full bg-zinc-950" >
       
       <SideBar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
 
