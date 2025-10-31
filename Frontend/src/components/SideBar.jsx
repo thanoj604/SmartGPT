@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
-import smartgptlogo from "../assets/smartgptlogo.gif"
+import smartgptlogo from "../assets/smartGPT.gif"
 import moment from "moment";
 import toast from "react-hot-toast";
 import Loading from "../pages/Loading";
