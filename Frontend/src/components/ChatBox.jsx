@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useAppContext } from "../context/AppContext";
-import SmartGPT from "../../public/SmartGPT.gif";
+import SmartGPT from "../assets/smartGPT.gif";
 import Message from "./Message";
 import { assets } from "../assets/assets";
 import loadingLogo from '../assets/loading.gif'
