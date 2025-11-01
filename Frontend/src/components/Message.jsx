@@ -31,7 +31,7 @@ const Message = ({message}) => {
     // AI / Assistant Message (Left-aligned)
     <div className="flex justify-start w-full">
       <div className="flex flex-col md:flex-row items-start md:gap-2 gap-1 max-w-[100%] md:max-w-5xl">
-        <img className="w-9 h-8 text-2xl md:w-19 md:h-15 rounded-full flex justify-center items-center" src={smartGPT} alt="AI" />
+        <img className="w-10 h-8 text-2xl md:w-19 md:h-15 rounded-full flex justify-center items-center" src={smartGPT} alt="AI" />
         <div className="w-full flex flex-col gap-1">
           {message.isImage ? (
             <img
