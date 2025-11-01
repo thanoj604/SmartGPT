@@ -143,9 +143,6 @@ const ChatBox = () => {
     </select>
 
 
-    
-
-
     <div className="flex w-full gap-2">
 
        {/* Prompt Input */}

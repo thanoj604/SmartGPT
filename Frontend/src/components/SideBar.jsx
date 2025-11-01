@@ -5,6 +5,7 @@ import smartgptlogo from "../assets/smartGPT.gif"
 import moment from "moment";
 import toast from "react-hot-toast";
 import Loading from "../pages/Loading";
+import { Link } from "react-router-dom";
 
 const SideBar = ({isMenuOpen, setIsMenuOpen}) => {
   const { chats, setSelectedChat, user, navigate, createNewChat, axios, setChats, fetchUsersChats, setToken, token } = useAppContext();
@@ -126,6 +127,12 @@ const SideBar = ({isMenuOpen, setIsMenuOpen}) => {
       )}
     </div>
   </div>
+
+  <Link to="/about" onClick={()=>setShowAbout(true)} className="flex justify-start items-center w-full gap-2 mt-3 sm:mt-4 p-3 sm:p-4 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition group text-sm sm:text-base">
+
+    About me 
+
+  </Link>
 
   {/* Close Button for Mobile */}
   <i

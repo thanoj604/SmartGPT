@@ -8,6 +8,7 @@ import Loading from "./pages/Loading";
 import { useAppContext } from "./context/AppContext";
 import Login from "./pages/Login";
 import {Toaster} from 'react-hot-toast'
+import About from "./pages/About";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
 
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
   const {pathname} = useLocation()
 
   if(pathname === '/loading' || loadingUser) return <Loading/>
@@ -34,6 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ChatBox />} />
         <Route path="/community" element={<Community />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </div>
 
